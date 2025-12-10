@@ -30,6 +30,7 @@ class LoanApprovalExtract():
         try:
             logging.info("Error")
             df=pd.read_csv(file_path)
+            df.drop('loan_id',axis=1,inplace=True)
             df.reset_index(drop=True,inplace=True)
             records=list(json.loads(df.T.to_json()).values())
             return records
@@ -53,7 +54,7 @@ class LoanApprovalExtract():
             raise LoanApprovalException(e,sys)
             
 if __name__=="__main__":
-    FILE_PATH="LoanApproval_Data/loan_approval_dataset.csv"
+    FILE_PATH="D:\Loan_Approval_Prediction\LoanApproval_Data\loan_approval_prediction.csv"
     DATABASE="Rajdeep"
     Collection="LoanApprovalData"
     networkobj=LoanApprovalExtract()
