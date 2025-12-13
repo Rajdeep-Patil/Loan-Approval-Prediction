@@ -7,4 +7,5 @@ pymongo
 dotenv
 certifi
 scikit-learn
+imblearn
 #-e .
