@@ -9,4 +9,6 @@ certifi
 scikit-learn
 imblearn
 pyyaml
+mlflow
+dagshub
 #-e .
