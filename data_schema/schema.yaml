@@ -1,0 +1,31 @@
+columns:
+- no_of_dependents: int64
+- education: object
+- self_employed: object 
+- income_annum: int64
+- loan_amount: int64
+- loan_term: int64
+- cibil_score: int64
+- residential_assets_value: int64
+- commercial_assets_value: int64
+- luxury_assets_value: int64
+- bank_asset_value: int64
+- loan_status: object
+
+numerical_columns:
+- no_of_dependents
+- income_annum
+- loan_amount
+- loan_term
+- cibil_score
+- residential_assets_value
+- commercial_assets_value
+- luxury_assets_value
+- bank_asset_value
+
+categorical_columns:
+- education
+- self_employed 
+
+target_column:
+- loan_status

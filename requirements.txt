@@ -8,4 +8,5 @@ dotenv
 certifi
 scikit-learn
 imblearn
+pyyaml
 #-e .
