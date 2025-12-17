@@ -11,4 +11,5 @@ imblearn
 pyyaml
 mlflow
 dagshub
+flask
 #-e .

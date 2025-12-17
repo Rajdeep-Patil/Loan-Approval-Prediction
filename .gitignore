@@ -1,2 +1,6 @@
 loan_approval
+.github
+workflows
+Artifacts
+logs
 .env
