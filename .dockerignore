@@ -1,48 +1,6 @@
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Virtual environments
-venv/
-env/
-.venv/
-ENV/
-
-# Git
-.git/
-.gitignore
-.github/
-
-# VS Code
-.vscode/
-
-# Logs
-logs/
-*.log
-
-# Jupyter
-.ipynb_checkpoints/
-notebook/
-
 # ML Artifacts & Data
 Artifacts/
-final_model/
 LoanApproval_Data/
-*.pkl
-*.joblib
-*.h5
 *.csv
 *.xlsx
 *.parquet
-
-# Environment variables
-.env
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Docker unnecessary
-docker-compose.yml
