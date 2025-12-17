@@ -1,6 +1,5 @@
 loan_approval
 .github/
 .vscode/
-Artifacts/
 logs
 .env
