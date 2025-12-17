@@ -71,6 +71,7 @@ class ModelTrainer:
                 'learning_rate':[.1,.01,.05,.001],
                 'subsample':[0.6,0.7,0.75,0.85,0.9],
                 'criterion':['squared_error', 'friedman_mse'],
+                'max_features': ['sqrt', 'log2', None],
                 'n_estimators': [8,16,32,64,128,256]
             },
             "Logistic Regression":{},
@@ -90,6 +91,7 @@ class ModelTrainer:
         best_model_name = list(model_report.keys())[
             list(model_report.values()).index(best_model_score)
         ]
+        print(f"\n--------------------------------------------------{best_model_name}--------------------------------------------------\n")
         best_model = models[best_model_name]
         y_train_pred=best_model.predict(X_train)
 
@@ -110,7 +112,9 @@ class ModelTrainer:
         os.makedirs(model_dir_path,exist_ok=True)
 
         Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
-        save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel)        
+        save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel) 
+        
+        save_object("final_model/model.pkl",best_model)       
 
         ## Model Trainer Artifact
         model_trainer_artifact=ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
