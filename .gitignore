@@ -1,6 +1,6 @@
 loan_approval
-.github
-workflows
-Artifacts
+.github/
+.vscode/
+Artifacts/
 logs
 .env
