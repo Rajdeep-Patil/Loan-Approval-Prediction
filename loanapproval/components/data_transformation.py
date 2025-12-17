@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.pipeline import Pipeline 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, FunctionTransformer
 from sklearn.compose import ColumnTransformer
+from imblearn.over_sampling import SMOTE
 from loanapproval.constant.training_pipeline import SCHEMA_FILE_PATH
 from loanapproval.utils.main_utils.utils import read_yaml_file
 from loanapproval.constant.training_pipeline import TARGET_COLUMN
@@ -56,7 +57,13 @@ class DataTransformation:
             return preprocessor
         except Exception as e:
             raise LoanApprovalException(e,sys)
-
+    def balanced_the_data(self,X,y):
+        try:
+            smote = SMOTE(random_state=42)
+            X_resampled, y_resampled = smote.fit_resample(X,y)
+            return X_resampled, y_resampled
+        except Exception as e:
+            raise LoanApprovalException(e,sys)
 
         
     def initiate_data_transformation(self)->DataTransformationArtifact:
@@ -71,6 +78,7 @@ class DataTransformation:
             target_feature_train_df = train_df[TARGET_COLUMN]
             target_feature_train_df = target_feature_train_df.replace({' Approved':0,' Rejected':1})
             target_feature_train_df = target_feature_train_df.astype(int)
+            
 
             ## testing dataframe
             input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN], axis=1)
@@ -84,6 +92,8 @@ class DataTransformation:
             transformed_input_train_feature=preprocessor_object.transform(input_feature_train_df)
             transformed_input_test_feature =preprocessor_object.transform(input_feature_test_df)
             
+            ## balance the train data
+            transformed_input_train_feature, target_feature_train_df = self.balanced_the_data(transformed_input_train_feature,target_feature_train_df)
 
             train_arr = np.c_[transformed_input_train_feature, np.array(target_feature_train_df) ]
             test_arr = np.c_[ transformed_input_test_feature, np.array(target_feature_test_df) ]
