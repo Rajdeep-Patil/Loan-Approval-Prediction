@@ -6,8 +6,11 @@ import sys
 from pymongo import MongoClient
 from loanapproval.utils.main_utils.utils import load_object
 
-MONGO_URI = "mongodb+srv://rajdeepgurjar07_db_user:JJDy58TzdRamjajo@loanapproval.wkgz25u.mongodb.net/?appName=loanapproval"
-client = MongoClient(MONGO_URI)
+from dotenv import load_dotenv
+load_dotenv()
+
+mongo_url = os.getenv("MONGODB_URL_KEY")
+client = MongoClient(mongo_url)
 
 db = client["loan_approval_db"]
 collection = db["predictions"]
