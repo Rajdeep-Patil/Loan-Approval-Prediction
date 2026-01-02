@@ -3,7 +3,15 @@ import pandas as pd
 import pickle
 import os
 import sys
+from pymongo import MongoClient
 from loanapproval.utils.main_utils.utils import load_object
+
+MONGO_URI = "mongodb+srv://rajdeepgurjar07_db_user:JJDy58TzdRamjajo@loanapproval.wkgz25u.mongodb.net/?appName=loanapproval"
+client = MongoClient(MONGO_URI)
+
+db = client["loan_approval_db"]
+collection = db["predictions"]
+
 
 app = Flask(__name__)
 
@@ -43,7 +51,14 @@ def predict():
         transformed = preprocessor.transform(df)
         prediction = model.predict(transformed)[0]
 
-        result = "Loan Approved ✅" if prediction == 0 else "Loan Rejected ❌"
+        result = "Loan Approved" if prediction == 0 else "Loan Rejected"
+        
+        mongo_data = {
+            **data,
+            "prediction": result,
+        }
+
+        collection.insert_one(mongo_data)
 
         return render_template("result.html", prediction=result)
 
