@@ -15,7 +15,6 @@ client = MongoClient(mongo_url)
 db = client["loan_approval_db"]
 collection = db["predictions"]
 
-
 app = Flask(__name__)
 
 MODEL_PATH = os.path.join("final_model", "model.pkl")
@@ -63,6 +62,7 @@ def predict():
 
         collection.insert_one(mongo_data)
 
+
         return render_template("result.html", prediction=result)
 
     except Exception as err:
@@ -74,6 +74,9 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=False)
+    import os
+    port = int(os.environ.get("PORT", 5001))  # Render sets PORT dynamically
+    app.run(host="0.0.0.0", port=port)
+
 
 
