@@ -29,8 +29,6 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-        print("FORM DATA 👉", request.form)
-
         data = {
             "education": request.form.get("education"),
             "self_employed": request.form.get("self_employed"),
@@ -42,7 +40,7 @@ def predict():
             "residential_assets_value": float(request.form.get("residential_assets_value")),
             "commercial_assets_value": float(request.form.get("commercial_assets_value")),
             "luxury_assets_value": float(request.form.get("luxury_assets_value")),
-            "bank_asset_value": float(request.form.get("bank_asset_value"))
+            "bank_asset_value": float(request.form.get("bank_asset_value")),
         }
 
         df = pd.DataFrame([data])
@@ -54,23 +52,21 @@ def predict():
         prediction = model.predict(transformed)[0]
 
         result = "Loan Approved" if prediction == 0 else "Loan Rejected"
-        
-        mongo_data = {
-            **data,
-            "prediction": result,
-        }
 
-        collection.insert_one(mongo_data)
+        client = MongoClient(os.getenv("MONGODB_URL_KEY"), serverSelectionTimeoutMS=3000)
+        db = client["loan_approval_db"]
+        collection = db["predictions"]
 
+        collection.insert_one({**data, "prediction": result})
+
+        client.close()  
 
         return render_template("result.html", prediction=result)
 
     except Exception as err:
         print("ERROR:", err)
-        return render_template(
-            "result.html",
-            prediction=f"Prediction Error: {err}"
-        )
+        return render_template("result.html", prediction=f"Prediction Error: {err}")
+
 
 
 if __name__ == "__main__":
